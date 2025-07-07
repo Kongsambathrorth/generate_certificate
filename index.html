@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate of Completion Generator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Link to external CSS file (assuming style.css is in the same directory as index.html) -->
+    <link rel="stylesheet" href="style.css">
+    <!-- html2canvas for capturing DOM as image (used for both image and PDF) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- jsPDF for generating PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body class="antialiased">
+    <!-- Input Form for Certificate Generation -->
+    <div class="input-form-container">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Generate Certificate</h2>
+        <div class="space-y-4">
+            <div>
+                <label for="recipientName" class="block text-gray-700 text-red-800 font-bold mb-2">Recipient's Name:</label>
+                <input type="text" id="recipientName" class="shadow appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-red-500" placeholder="e.g., Jane Doe">
+            </div>
+            <div>
+                <label for="conductedOn" class="block text-gray-700 text-sm font-bold mb-2">Conducted On (Date):</label>
+                <input type="date" id="conductedOn" class="shadow appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-black-500">
+            </div>
+            <div>
+                <label for="certificateId" class="block text-gray-700 text-sm font-bold mb-2">Certificate ID:</label>
+                <input type="text" id="certificateId" class="shadow appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-black-500" placeholder="e.g., CERT-2025-001">
+            </div>
+            <div>
+                <label for="qrCodeLink" class="block text-gray-700 text-sm font-bold mb-2">QR Code Link (URL):</label>
+                <input type="url" id="qrCodeLink" class="shadow appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-black-500" placeholder="e.g., https://your-verification-link.com/cert123">
+            </div>
+            <button id="generateCertificateBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out transform hover:scale-105">
+                Generate Certificate
+            </button>
+            <button id="downloadCertificateBtn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out transform hover:scale-105 mt-2">
+                Download as Image
+            </button>
+            <button id="downloadPdfBtn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out transform hover:scale-105 mt-2">
+                Download as PDF
+            </button>
+        </div>
+    </div>
+
+    <div id="certificateToDownload" class="certificate-container relative z-10">
+        <div class="certificate-content">
+            <!-- Organization Logos -->
+            <div class="flex justify-between items-center mb-8 px-4">
+                <img src="/src/amret.png" alt="Amret Logo" class="h-10 md:h-14 rounded-md">
+                <img src="/src/GR.png" alt="Good Return Logo" class="h-10 md:h-16 rounded-md">
+            </div>
+
+            <div class="flex-grow flex flex-col justify-center items-center">
+                <!-- Title -->
+                <h1 class="text-4xl md:text-5xl font-extrabold text-black-700 mb-6 tracking-tight">
+                    CERTIFICATE OF COMPLETION
+                </h1>
+
+                <!-- Sub-text -->
+                <p class="text-lg md:text-xl text-gray-700 mb-4">
+                    THIS CERTIFIES THAT
+                </p>
+
+                <!-- Recipient's Name -->
+                <h2 id="displayRecipientName" class="text-3xl md:text-4xl font-bold text-red-800 mb-8 uppercase tracking-wide">
+                    JOHN DOE
+                </h2>
+
+                <!-- Course Completion Text -->
+                <p class="text-lg md:text-xl text-gray-700 mb-4">
+                    HAS SUCCESSFULLY COMPLETED DIVERSITY & INCLUSIVE TRAINING PROGRAM:
+                </p>
+
+                <!-- Training Program Name -->
+                <h3 class="text-2xl md:text-3xl font-semibold text-gray-800 mb-8">
+                    "GENDER EQUALITY AND UNCONCIOUS BIAS WORKSHOP"
+                </h3>
+
+                <!-- Date of Completion -->
+                <p class="text-xl md:text-2xl font-medium text-gray-600 mb-6">
+                    CONDUCTED ON: <span id="displayConductedOn" class="font-bold text-gray-600">JULY 7, 2025</span>
+                </p>
+
+                <!-- Brief Description/Learning Outcomes -->
+                <p class="text-md md:text-lg text-gray-600 mb-10 leading-relaxed max-w-2xl mx-auto">
+                    This program covered fundamental principles and best practices in promoting gender equality in workplace.
+                </p>
+
+                <!-- Awarded By -->
+                <p class="text-lg md:text-xl text-gray-700 mb-8">
+                    Awarded by: <span class="font-semibold text-gray-700">GOOD RETURN</span>
+                </p>
+
+                <!-- Signatures Section -->
+                <div class="flex flex-col justify-center items-center mt-12 space-y-8 md:space-y-0">
+                    <div class="flex-1 min-w-0">
+                        <!-- Program Director Signature Image -->
+                        <img src="/src/Ben.png" alt="Bénigne du Parc Signature" class="mx-auto h-20 mb-2 object-contain">
+                        <div class="border-b-2 border-gray-400 pb-2 mb-2 w-full max-w-xs mx-auto"></div>
+                        <p class="text-sm md:text-base text-gray-700 font-medium">Bénigne du Parc</p>
+                        <p class="text-xs md:text-sm text-gray-600">Program Director</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Info -->
+            <div class="mt-20 text-sm md:text-base text-gray-500 flex flex-col items-center justify-center">
+                <p class="mb-1">Certificate verification: rifacademy.org/certificate</p>
+                <p class="mb-1">DATE OF ISSUANCE: JULY 7, 2025</p>
+                <p class="mb-4">CERTIFICATE ID: <span id="displayCertificateId" class="font-mono">CERT-2025-001</span></p>
+                <!-- QR Code Container -->
+                <div id="qrCodeContainer" class="mx-auto rounded-md p-2 bg-white border border-gray-200">
+                    <!-- QR code will be generated here by JavaScript -->
+                     
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link to external JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>

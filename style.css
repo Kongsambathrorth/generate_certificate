@@ -1,0 +1,104 @@
+/* Custom font for a professional look */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f0f2f5; /* Light grey background */
+    display: flex;
+    flex-direction: column; /* Arrange content vertically */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ensure it takes full viewport height */
+    padding: 2rem; /* Add some padding around the certificate */
+    box-sizing: border-box; /* Include padding in element's total width and height */
+}
+.input-form-container {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    margin-bottom: 2rem; /* Space between form and certificate */
+    max-width: 600px;
+    width: 100%;
+}
+.certificate-container {
+    max-width: 900px; /* Max width for larger screens */
+    width: 100%; /* Full width on smaller screens */
+    background-color: #ffffff; /* White background for the certificate */
+    border: 8px solid #E4002B; /* Changed to Good Return Red border */
+    border-radius: 16px; /* Rounded corners for the certificate */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Soft shadow */
+    padding: 2.5rem; /* Inner padding */
+    text-align: center;
+    position: relative;
+    overflow: hidden; /* Hide overflow from decorative elements */
+}
+
+.certificate-content {
+    padding: 0; /* Resetting padding to be managed by certificate-container */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Decorative border elements (optional, but adds flair) */
+.certificate-container::before,
+.certificate-container::after {
+    content: '';
+    position: absolute;
+    width: 100px; /* Size of the decorative element */
+    height: 100px;
+    background-color: #FEEEEE; /* Lighter red accent */
+    border-radius: 50%; /* Make it circular */
+    opacity: 0.3; /* Subtle transparency */
+    z-index: 0; /* Behind content */
+}
+.certificate-container::before {
+    top: -50px;
+    left: -50px;
+}
+.certificate-container::after {
+    bottom: -50px;
+    right: -50px;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .certificate-container {
+        padding: 1.5rem; /* Reduce padding on smaller screens */
+        border-width: 6px; /* Slightly thinner border */
+    }
+    .text-5xl { /* Adjust heading size */
+        font-size: 2.5rem; /* ~40px */
+    }
+    .text-4xl { /* Adjust name size */
+        font-size: 2rem; /* ~32px */
+    }
+    .text-2xl { /* Adjust course title size */
+        font-size: 1.5rem; /* ~24px */
+    }
+    .text-lg { /* Adjust general text size */
+        font-size: 1rem; /* ~16px */
+    }
+    .input-form-container {
+        padding: 1rem;
+    }
+}
+@media (max-width: 480px) {
+    .certificate-container {
+        padding: 1rem;
+        border-width: 4px;
+    }
+    .text-5xl {
+        font-size: 2rem; /* ~32px */
+    }
+    .text-4xl {
+        font-size: 1.75rem; /* ~28px */
+    }
+    .text-2xl {
+        font-size: 1.25rem; /* ~20px */
+    }
+    .text-lg {
+        font-size: 0.9rem; /* ~14px */
+    }
+}
