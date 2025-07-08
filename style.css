@@ -22,16 +22,20 @@ body {
     width: 100%;
 }
 .certificate-container {
-    max-width: 900px; /* Max width for larger screens */
-    width: 100%; /* Full width on smaller screens */
-    background-color: #ffffff; /* White background for the certificate */
+    /* Fixed dimensions for A4 Portrait aspect ratio */
+    width: 210mm; /* A4 width in portrait */
+    height: 297mm; /* A4 height in portrait */
+    max-width: 210mm; /* Ensure it doesn't exceed A4 width */
+    max-height: 297mm; /* Ensure it doesn't exceed A4 height */
+    overflow: hidden; /* Crucial to prevent content overflow if forced into fixed size */
+
+    background-color: #f8f8f8; /* Very light gray background for the certificate */
     border: 8px solid #E4002B; /* Changed to Good Return Red border */
     border-radius: 16px; /* Rounded corners for the certificate */
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Soft shadow */
-    padding: 2.5rem; /* Inner padding */
+    padding: 1.5rem; /* Inner padding - Adjusted for portrait fit */
     text-align: center;
-    position: relative;
-    overflow: hidden; /* Hide overflow from decorative elements */
+    box-sizing: border-box; /* Ensure padding is included in the fixed width/height */
 }
 
 .certificate-content {
@@ -39,6 +43,10 @@ body {
     text-align: center;
     display: flex;
     flex-direction: column;
+    justify-content: space-between; /* Distribute space vertically */
+    height: 100%; /* Take full height of parent */
+    position: relative;
+    z-index: 1;
 }
 
 /* Decorative border elements (optional, but adds flair) */
@@ -62,43 +70,133 @@ body {
     right: -50px;
 }
 
-/* Responsive adjustments for smaller screens */
-@media (max-width: 768px) {
+/* Adjusted font sizes for better fit on A4 Portrait */
+/* Base sizes (for default/larger screens within portrait constraints) */
+.text-5xl { /* Used for md:h-32 logo */
+    font-size: 2.2rem; /* Adjusted for overall fit */
+    line-height: 1.1;
+}
+.text-4xl { /* Used for h1 default */
+    font-size: 1.8rem;
+    line-height: 1.2;
+}
+.text-3xl { /* Used for md:text-3xl */
+    font-size: 1.5rem;
+}
+.text-2xl { /* Used for h2 default */
+    font-size: 1.25rem;
+}
+.text-xl { /* Used for h3 default */
+    font-size: 1.1rem;
+}
+.text-lg { /* Used for p text-lg */
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+.text-md { /* Used for p text-md (description) */
+    font-size: 0.85rem;
+}
+.text-sm { /* Used for signature names */
+    font-size: 0.75rem;
+}
+.text-xs { /* Used for signature titles */
+    font-size: 0.65rem;
+}
+
+
+/* Styles for the combined signatures and footer info container */
+.signatures-and-footer-container {
+    display: flex;
+    flex-direction: column; /* Always stack vertically for portrait */
+    align-items: center; /* Center items when stacked */
+    width: 100%;
+    margin-top: 1rem; /* Adjust margin to fit content vertically */
+    padding: 0 0.5rem; /* Reduced horizontal padding for tighter fit */
+}
+
+.signatures-section {
+    display: flex;
+    flex-direction: row; /* Keep signatures side-by-side */
+    justify-content: center;
+    gap: 1.5rem; /* Reduced space between signatures */
+    width: 90%; /* Allow signatures to take more width */
+    margin-bottom: 1rem; /* Space below signatures section */
+}
+
+.signatures-section > div {
+    flex-basis: 50%; /* Each signature takes equal space */
+    max-width: 180px; /* Further constrain individual signature block width */
+}
+
+.footer-info-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content within this column */
+    width: 90%; /* Allow footer info to take more width */
+    font-size: 0.65rem; /* Smaller font for verification details */
+    text-align: center; /* Center text within this section */
+    line-height: 1.2;
+    margin-top: 0.5rem; /* Space above footer info section when stacked */
+}
+
+.verification-details-small {
+    width: 100%; /* Take full width to center content */
+    text-align: center; /* Center all inline/inline-block content within this block */
+    font-size: 0.65rem; /* Explicitly smaller for QR related text */
+    padding-top: 0.1rem; /* Reduced for tighter spacing */
+    margin-bottom: 0.1rem; /* Reduced for tighter spacing */
+}
+
+#qrCodeContainer {
+    display: block;
+    margin: 0 auto 0.1rem auto; /* Reduced bottom margin for tighter spacing */
+    width: 70px; /* Slightly smaller QR for tighter fit */
+    height: 70px; /* Slightly smaller QR for tighter fit */
+}
+
+/* Responsive adjustments for smaller screen widths (within portrait context) */
+@media (max-width: 210mm) { /* When screen width is less than A4 portrait width */
     .certificate-container {
-        padding: 1.5rem; /* Reduce padding on smaller screens */
-        border-width: 6px; /* Slightly thinner border */
+        width: 100%; /* Scale down to fill screen width */
+        height: auto; /* Let height adjust with content */
+        aspect-ratio: 210 / 297; /* Maintain portrait aspect ratio */
+        padding: 1rem; /* Further reduce padding */
+        border-width: 5px;
     }
-    .text-5xl { /* Adjust heading size */
-        font-size: 2.5rem; /* ~40px */
+
+    /* Further scale down font sizes for smaller screens */
+    .text-5xl { font-size: 1.8rem; }
+    .text-4xl { font-size: 1.5rem; }
+    .text-3xl { font-size: 1.2rem; }
+    .text-2xl { font-size: 1rem; }
+    .text-xl { font-size: 0.9rem; }
+    .text-lg { font-size: 0.8rem; }
+    .text-md { font-size: 0.75rem; }
+    .text-sm { font-size: 0.65rem; }
+    .text-xs { font-size: 0.55rem; }
+
+    .signatures-section {
+        gap: 1rem; /* Smaller gap for very small screens */
     }
-    .text-4xl { /* Adjust name size */
-        font-size: 2rem; /* ~32px */
-    }
-    .text-2xl { /* Adjust course title size */
-        font-size: 1.5rem; /* ~24px */
-    }
-    .text-lg { /* Adjust general text size */
-        font-size: 1rem; /* ~16px */
-    }
-    .input-form-container {
-        padding: 1rem;
+    #qrCodeContainer {
+        width: 60px;
+        height: 60px;
     }
 }
+
 @media (max-width: 480px) {
     .certificate-container {
-        padding: 1rem;
-        border-width: 4px;
+        padding: 0.75rem;
+        border-width: 3px;
+        border-radius: 10px;
     }
-    .text-5xl {
-        font-size: 2rem; /* ~32px */
-    }
-    .text-4xl {
-        font-size: 1.75rem; /* ~28px */
-    }
-    .text-2xl {
-        font-size: 1.25rem; /* ~20px */
-    }
-    .text-lg {
-        font-size: 0.9rem; /* ~14px */
-    }
+    .text-5xl { font-size: 1.5rem; }
+    .text-4xl { font-size: 1.2rem; }
+    .text-3xl { font-size: 1rem; }
+    .text-2xl { font-size: 0.85rem; }
+    .text-xl { font-size: 0.75rem; }
+    .text-lg { font-size: 0.7rem; }
+    .text-md { font-size: 0.65rem; }
+    .text-sm { font-size: 0.6rem; }
+    .text-xs { font-size: 0.5rem; }
 }

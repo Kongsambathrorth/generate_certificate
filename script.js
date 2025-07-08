@@ -92,9 +92,9 @@ window.onload = function() {
         formContainer.style.display = 'none'; // Hide form during capture
 
         html2canvas(certificateToDownload, {
-            scale: 2, // Increase scale for better quality
-            useCORS: true, // Required if images are from different origins
-            logging: false // Disable logging
+            scale: 3.125, // Adjusted scale for 300 PPI output
+            useCORS: true,
+            logging: false
         }).then(canvas => {
             const image = canvas.toDataURL('image/png');
             const link = document.createElement('a');
@@ -116,7 +116,7 @@ window.onload = function() {
         formContainer.style.display = 'none'; // Hide form during capture
 
         html2canvas(certificateToDownload, {
-            scale: 2, // Increase scale for better quality
+            scale: 3.125, // Adjusted scale for 300 PPI output
             useCORS: true,
             logging: false
         }).then(canvas => {
@@ -140,7 +140,7 @@ window.onload = function() {
 
             // Desired top/bottom margin in mm (approx 1 inch each side)
             const desiredVerticalMarginMm = 25.4; // 1 inch
-            const sideMarginMm = 10; // Keep a reasonable side margin
+            const sideMarginMm = 25.4; // 1 inch
 
             const effectivePrintableWidthMm = pdfWidthMm - (2 * sideMarginMm);
             const effectivePrintableHeightMm = pdfHeightMm - (2 * desiredVerticalMarginMm);
